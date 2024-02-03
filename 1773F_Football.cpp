@@ -1,89 +1,88 @@
-#include<iostream>
+#include <bits/stdc++.h>
 using namespace std;
-int main(){
-    long long n,a,b;
-    cin>>n>>a>>b;
-    long long y=n;
-    if(n==1){
-        if(a==b)
-            cout<<1<<endl;
+#define int long long
+int32_t main()
+{
+    long long n, a, b;
+    cin >> n >> a >> b;
+    long long y = n;
+    if (n == 1)
+    {
+        if (a == b)
+            cout << 1 << endl;
         else
-            cout<<0<<endl;
-        cout<<a<<":"<<b<<endl;
+            cout << 0 << endl;
+        cout << a << ":" << b << endl;
         return 0;
     }
-    else if((a+b)<n){
-        cout<<n-(a+b)<<endl;
-        long long m=n-(a+b);
-        while(a--){
-            cout<<1<<":"<<0<<endl;
-        }
-        while(b--){
-            cout<<0<<":"<<1<<endl;
-        }
-        while(m--){
-            cout<<0<<":"<<0<<endl;
-        }
-        return 0;
+    vector<pair<int, int>> v(n + 1);
+    for (int i = 1; i <= n; i++)
+    {
+        v[i].first = 0;
+        v[i].second = 0;
     }
-    else if((a+b)>=n){
-        cout<<0<<endl;
-        if(a==0){
-            while(n>0){
-                if(n==1&&b>0){
-                    cout<<0<<":"<<b<<endl;
+
+    int draw = 0;
+    int match = 1;
+    while (match <= n)
+    {
+        if (a > 0)
+        {
+            a--;
+            v[match].first++;
+            match++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if (a > 0)
+    {
+        v[1].first += a;
+    }
+
+    if (b)
+    {
+        if (match == n + 1)
+        {
+            v[1].first++;
+            v[n].first--;
+            v[n].second = b;
+        }
+        else
+        {
+            while (match <= n)
+            {
+                if (b > 0)
+                {
+                    b--;
+                    v[match].second++;
+                    match++;
+                }
+                else
+                {
                     break;
                 }
-                cout<<0<<":"<<1<<endl;
-                b--;
-                n--;
+            }
+            if (b > 0)
+            {
+                v[n].second += b;
             }
         }
-        else if(b==0){
-            while(n>0){
-                if(n==1&&a>0){
-                    cout<<a<<":"<<0<<endl;
-                    break;
-                }
-                cout<<1<<":"<<0<<endl;
-                a--;
-                n--;
-            }
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        if (v[i].first == v[i].second)
+        {
+            draw++;
         }
-        else if(a>0 && b>0){
-            while(n>0){
-                if(n==2 && a==b){
-                    cout<<a-1<<":"<<b<<endl;
-                    cout<<1<<":"<<0<<endl;
-                    n-=2;
-                    return 0;
-                }
-                if(n==1 && ((a>b)||(b>a))){
-                    cout<<a<<":"<<b<<endl;
-                    n--;
-                    return 0;
-                }
-                if(y%2){
-                    if(n%2){
-                        cout<<1<<":"<<0<<endl;
-                        a--;
-                        n--;
-                    }
-                    else{
-                        cout<<0<<":"<<1<<endl;
-                        b--;
-                        n--;
-                    }
-                }
-                else if(y%2!=0){
-                        cout<<1<<":"<<0<<endl;
-                        cout<<0<<":"<<1<<endl;
-                        a--;
-                        b--;
-                        n-=2;
-                }
-            }
-        }
+    }
+
+    cout << draw << endl;
+    for (int i = 1; i <= n; i++)
+    {
+        cout << v[i].first << ":" << v[i].second << endl;
     }
     return 0;
 }
